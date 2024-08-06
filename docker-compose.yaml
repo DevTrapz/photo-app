@@ -5,12 +5,31 @@ services:
     volumes:
       - ./front-end/:/app
       - front-end-node-modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      front-end:
   back-end:
     build:
       dockerfile: Dockerfile.back-end
     volumes:
       - ./back-end/:/app
       - back-end-node-modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      back-end:
 volumes:
   front-end-node-modules:
   back-end-node-modules:
+
+
+networks:
+  back-end:
+    name: photo-app-back-end
+    ipam:
+      driver: default
+  front-end:
+    name: photo-app-front-end
+    ipam:
+      driver: default
