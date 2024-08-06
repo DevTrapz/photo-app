@@ -2,6 +2,15 @@ services:
   front-end:
     build:
       dockerfile: Dockerfile.front-end
+    volumes:
+      - ./front-end/:/app
+      - front-end-node-modules:/app/node_modules
   back-end:
     build:
       dockerfile: Dockerfile.back-end
+    volumes:
+      - ./back-end/:/app
+      - back-end-node-modules:/app/node_modules
+volumes:
+  front-end-node-modules:
+  back-end-node-modules:
