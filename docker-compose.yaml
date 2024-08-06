@@ -2,9 +2,10 @@ services:
   front-end:
     build:
       dockerfile: Dockerfile.front-end
+    container_name: photo-app-front-end
     volumes:
       - ./front-end/:/app
-      - ${IMAGE_DATA_DIR}:/app/data
+      - "${IMAGE_DATA_DIR}:/app/data"
       - front-end-node-modules:/app/node_modules
     ports:
       - "5173:5173"
@@ -15,9 +16,10 @@ services:
   back-end:
     build:
       dockerfile: Dockerfile.back-end
+    container_name: photo-app-back-end
     volumes:
       - ./back-end/:/app
-      - ${IMAGE_DATA_DIR}:/app/data
+      - "${IMAGE_DATA_DIR}:/app/data"
       - back-end-node-modules:/app/node_modules
     ports:
       - "3000:3000"
