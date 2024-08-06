@@ -4,21 +4,27 @@ services:
       dockerfile: Dockerfile.front-end
     volumes:
       - ./front-end/:/app
+      - ${IMAGE_DATA_DIR}:/app/data
       - front-end-node-modules:/app/node_modules
     ports:
       - "5173:5173"
     networks:
       front-end:
+    command: npm run dev
+
   back-end:
     build:
       dockerfile: Dockerfile.back-end
     volumes:
       - ./back-end/:/app
+      - ${IMAGE_DATA_DIR}:/app/data
       - back-end-node-modules:/app/node_modules
     ports:
       - "3000:3000"
     networks:
       back-end:
+    command: npm start
+
 volumes:
   front-end-node-modules:
   back-end-node-modules:
