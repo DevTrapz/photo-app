@@ -1,0 +1,7 @@
+services:
+  front-end:
+    build:
+      dockerfile: Dockerfile.front-end
+  back-end:
+    build:
+      dockerfile: Dockerfile.back-end

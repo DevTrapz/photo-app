@@ -1,0 +1,6 @@
+FROM node:latest
+
+RUN apt update
+WORKDIR /app
+COPY ./back-end/package*.json .
+RUN npm install
