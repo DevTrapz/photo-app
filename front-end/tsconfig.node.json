@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "declaration": true,
+    "allowJs": true,
+    "checkJs": false,
+    "target": "ES6"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
