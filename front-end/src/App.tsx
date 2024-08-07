@@ -33,12 +33,13 @@ function App() {
   
   return (
     <>
-      {
-      images.map((image, index)=>
-          <Card key={index} className="max-w-sm  mx-auto" imgSrc={`${import.meta.env.VITE_DATA_DIR}${image}`}>
-          </Card>
-        )
-      }
+      {images.map((image, index) => (
+        <Card
+          key={index}
+          className="max-w-md  mx-auto bg-zinc-800 border-0 rounded-none"
+          imgSrc={`${import.meta.env.VITE_DATA_DIR}${image}`}
+        />
+      ))}
     </>
   );
 }
