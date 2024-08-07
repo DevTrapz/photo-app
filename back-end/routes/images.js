@@ -14,8 +14,8 @@ function getImages() {
         return;
       }
       
-      const images = files.filter(file => file.endsWith('.jpg'));
-      resolve(images);
+      const shuffledImages = images.sort((a, b) => 0.5 - Math.random());
+      resolve(shuffledImages);
     });
   });
 }
