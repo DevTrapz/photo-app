@@ -11,7 +11,8 @@
     "declaration": true,
     "allowJs": true,
     "checkJs": false,
-    "target": "ES6"
+    "target": "ES6",
+    "allowImportingTsExtensions": true
   },
   "include": [
     "src/**/*"
