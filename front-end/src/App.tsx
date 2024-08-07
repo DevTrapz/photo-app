@@ -16,13 +16,10 @@ function App() {
       const requestOptions = {
         method: "GET",
         mode: "cors" as RequestMode,
-      }
-    
-      debugger
-      var res = await fetch("http://localhost:3000/images", requestOptions)
-      var data = await res.json()
-      const test = [2,4,1]
-      setImages(data)
+      var res = await fetch(
+        `http://${import.meta.env.VITE_LOCAL_IPv4}:3000/images`,
+        requestOptions
+      );
     } catch (err) {
       console.log(err)
     }
