@@ -3,34 +3,30 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 function App() {
-
-  const [images, setImages]= useState([])
+  const [images, setImages] = useState([]);
 
   const fetchImages = async () => {
     try {
-      const headers = {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin" : "GET"
-      }
-
       const requestOptions = {
         method: "GET",
         mode: "cors" as RequestMode,
+      };
+
       var res = await fetch(
         `http://${import.meta.env.VITE_LOCAL_IPv4}:3000/images`,
         requestOptions
       );
+      var data = await res.json();
+      setImages(data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
-  useEffect(()=>{
-    fetchImages()
-  },[])
+  useEffect(() => {
+    fetchImages();
+  }, []);
 
-  
-  
   return (
     <>
       {images.map((image, index) => (

@@ -1,8 +1,8 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const fs = require('fs')
-const path = require('path')
-require('dotenv').config()
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config();
 
 const directoryPath = path.join(__dirname, process.env.IMAGE_DATA_DIR);
 
@@ -13,19 +13,20 @@ function getImages() {
         reject([]);
         return;
       }
-      
+
+      const images = files.filter((file) => file.endsWith(".jpg"));
       const shuffledImages = images.sort((a, b) => 0.5 - Math.random());
       resolve(shuffledImages);
     });
   });
 }
 
-router.get('/', async function(req, res, next) {
+router.get("/", async function (req, res, next) {
   try {
-    const images = await getImages()
-    res.send(images)
+    const images = await getImages();
+    res.send(images);
   } catch (err) {
-    res.send(err)
+    res.send(err);
   }
 });
 
