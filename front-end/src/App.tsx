@@ -1,6 +1,7 @@
-import { Card } from "flowbite-react";
+// import { Card } from "flowbite-react";
 import React from "react";
 import { useState, useEffect } from "react";
+import Video from "./components/Video";
 
 function App() {
   const [images, setImages] = useState([]);
@@ -45,10 +46,10 @@ function App() {
           />
         ))}
       {images.map((image, index) => (
-        <Card
+        <img
           key={index}
+          src={`${import.meta.env.VITE_IMAGE_DATA_DIR}${image}`}
           className="max-w-md  mx-auto bg-zinc-800 border-0 rounded-none"
-          imgSrc={`${import.meta.env.VITE_DATA_DIR}${image}`}
         />
       ))}
     </>
