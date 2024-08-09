@@ -1,18 +1,16 @@
 import React from "react";
 
-export default function Video({ src, key }) {
+export default function Video({ src, id }) {
   return (
     <>
       <video
-        key={key}
-        id="my-player"
+        id={id}
         controls
         preload="metadata"
         loop={true}
         autoPlay={true}
-        // poster="//vjs.zencdn.net/v/oceans.png"
-        data-setup='{ "autoplay": true, "loop": true }'
-        className="max-w-md w-full mx-auto mb-10"
+        muted={true}
+        className="max-w-md w-full mx-auto mb-8"
       >
         <source src={src} type="video/mp4"></source>
       </video>
