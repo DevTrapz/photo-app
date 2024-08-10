@@ -1,27 +1,33 @@
-import React, { useState, useRef } from "react";
+import { useCookies } from "react-cookie";
 
-const defaultOptions = {
-  video: true,
-  photo: true,
-  short: true,
-};
+interface preferences {
+  "display-video"?: boolean;
+  "display-photo"?: boolean;
+  "display-short"?: boolean;
+}
+
 
 export default function OptionsMenu() {
-  const [options, setOptions] = useState(defaultOptions); // options that are currently set
+  const [cookies, setCookies] = useCookies(["preferences"]);
   const isOptionsOpen = useRef(false);
+
+  function getDisplayType(element: HTMLElement) {
+    var option = element.className;
+    return option.split(" ")[0];
+  }
 
   function toggleOption(e) {
     const btn: HTMLElement = e.target;
-    var option = btn.className;
-    option = option.split("-")[1];
-    option = option.split(" ")[0];
+    const option = getDisplayType(btn);
 
-    const newOptions = { ...options };
-    newOptions[option] = !newOptions[option];
-    setOptions(newOptions);
+    const newOptions: preferences = { ...cookies.preferences };
+    option in newOptions
+      ? (newOptions[option] = !newOptions[option])
+      : (newOptions[option] = false);
+
+    setCookies("preferences", newOptions);
 
     newOptions[option] ? btn.classList.add("on") : btn.classList.remove("on");
-    updateOptions(newOptions);
   }
 
   return (
