@@ -114,23 +114,23 @@ function App() {
   return (
     <>
       {renderBlock.map((stream, index) => {
-        if (stream.hasOwnProperty("image")) {
-          return <Image id={index} src={stream.image} />;
-        } else if (stream.hasOwnProperty("video")) {
+        if ("image" in stream) return <Image id={index} src={stream.image} />;
+
+        if ("video" in stream)
           return (
             <Video
               id={index}
               src={`${import.meta.env.VITE_VIDEO_DATA_DIR}${stream.video}`}
             />
           );
-        } else if (stream.hasOwnProperty("short")) {
+
+        if ("short" in stream)
           return (
             <Video
               id={index}
               src={`${import.meta.env.VITE_SHORT_DATA_DIR}${stream.short}`}
             />
           );
-        }
       })}
     </>
   );
