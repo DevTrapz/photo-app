@@ -4,7 +4,7 @@ const path = require("path");
 const getFiles = require("../utils/getFiles");
 require("dotenv").config();
 
-const directoryPath = path.join(__dirname, process.env.IMAGE_DATA_DIR);
+const directoryPath = path.join(__dirname, process.env.PHOTO_DATA_DIR);
 
 router.get("/", async function (req, res, next) {
   try {
