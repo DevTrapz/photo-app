@@ -20,27 +20,10 @@ function App() {
     threshold: 0.5,
   };
 
-  function cleanFilterData(data: String[]) {
-    data = data.map((mediaType) => {
-      mediaType = mediaType.split("-")[1];
-      if (mediaType == "photo") mediaType = "image";
-      return mediaType;
-    });
-    return data;
-  }
-
   function filterMediaPreferences() {
-    var preferences = Object.entries(cookies.preferences);
-    var filter = [];
-    preferences.map((preference) => {
-      if (!preference[1]) return;
-      filter.push(preference[0]);
-    });
-
-    filter = cleanFilterData(filter);
-
+    const preferences = cookies.preferences["display-options"];
     const newStream = dataStream.filter((media) =>
-      filter.some((mediaType) => mediaType in media)
+      preferences.some((mediaType) => mediaType in media)
     );
 
     setPreferred(newStream);

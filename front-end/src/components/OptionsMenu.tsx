@@ -18,37 +18,41 @@ export default function OptionsMenu() {
   }
 
   function toggleOption(e) {
-    const btn: HTMLElement = e.target;
-    const option = getDisplayType(btn);
+    const btn: HTMLElement = e.currentTarget;
+    const option = btn.id;
+    const cookie = cookies.preferences;
+    var displayOptions = cookie["display-options"];
 
-    const newOptions: preferences = { ...cookies.preferences };
-    option in newOptions
-      ? (newOptions[option] = !newOptions[option])
-      : (newOptions[option] = false);
-
-    setCookies("preferences", newOptions);
-
-    newOptions[option] ? btn.classList.add("on") : btn.classList.remove("on");
+    if (displayOptions.some((displayOption) => displayOption == option)) {
+      displayOptions = displayOptions.filter(
+        (displayOption) => displayOption != option
+      );
+    } else {
+      displayOptions.push(option);
+    }
+    setCookies("preferences", { "display-options": displayOptions });
   }
-
   function setPreferredOptions() {
-    var preferences = Object.entries(cookies.preferences);
-    var filter = [];
-    preferences.map((preference) => {
-      if (preference[1]) return;
-      filter.push(preference[0]);
-    });
-
+    var preferences = cookies.preferences["display-options"];
     var elements = document.querySelectorAll("[class^=display]");
     [...elements].map((element: HTMLElement) => {
-      const option = getDisplayType(element);
-      !filter.some((type) => type == option) && element.classList.add("on");
+      const option = element.id;
+      if (preferences.some((type) => type == option)) {
+        element.classList.remove("bg-gray-200");
+        element.classList.add("bg-cyan-700");
+      } else {
+        element.classList.remove("bg-cyan-700");
+        element.classList.add("bg-gray-200");
+      }
+      ("");
     });
+
+    elements;
   }
 
   useEffect(() => {
     setPreferredOptions();
-  }, []);
+  }, [cookies.preferences]);
 
   return (
     <div className="options-drawer">
