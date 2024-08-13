@@ -4,6 +4,7 @@ export default function Video({ src, id }) {
   return (
     <>
       <video
+        key={id}
         id={id}
         controls
         preload="metadata"
