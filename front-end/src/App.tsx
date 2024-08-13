@@ -68,6 +68,8 @@ function App() {
     if (renderBlock.length >= 3) {
       const blockSize = renderBlock.length;
       const observeID = blockSize - 3;
+      // debugger;
+      // const observedElement = document.querySelector(`[key=${observeID}]`);
       const observedElement = document.getElementById(`${observeID}`);
       observer.observe(observedElement);
     }
@@ -97,11 +99,13 @@ function App() {
   return (
     <>
       {renderBlock.map((stream, index) => {
-        if ("image" in stream) return <Image id={index} src={stream.image} />;
+        if ("photo" in stream)
+          return <Image key={index} id={index} src={stream.photo} />;
 
         if ("video" in stream)
           return (
             <Video
+              key={index}
               id={index}
               src={`${import.meta.env.VITE_VIDEO_DATA_DIR}${stream.video}`}
             />
@@ -110,6 +114,7 @@ function App() {
         if ("short" in stream)
           return (
             <Video
+              key={index}
               id={index}
               src={`${import.meta.env.VITE_SHORT_DATA_DIR}${stream.short}`}
             />
