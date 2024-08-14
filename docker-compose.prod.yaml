@@ -1,0 +1,64 @@
+services:
+  build-front-end:
+    build:
+      dockerfile: Dockerfile.front-end
+    container_name: build-front-end
+    volumes:
+      - ./front-end/:/app
+      - "${MEDIA_DATA_DIR}:/app/data"
+      - front-end-node-modules:/app/node_modules
+      - "dist:/app/dist/"
+    environment:
+      - "VITE_BACK_END_LOCAL_IPv4=${PROD_BACK_END_LOCAL_IPv4}"
+      - "VITE_BACK_END_PORT=${PROD_BACK_END_PORT}"
+      - "VITE_PHOTO_DATA_DIR=${PROD_PHOTO_DATA_DIR}"
+      - "VITE_VIDEO_DATA_DIR=${PROD_VIDEO_DATA_DIR}"
+      - "VITE_SHORT_DATA_DIR=${PROD_SHORT_DATA_DIR}"
+    command: npm run build
+
+  prod-back-end:
+    build: 
+      dockerfile: Dockerfile.back-end
+    container_name: production-photo-app-back-end
+    volumes:
+      - ./back-end/:/app
+      - "${MEDIA_DATA_DIR}:/app/data"
+      - back-end-node-modules:/app/node_modules
+    ports:
+      - "${PROD_BACK_END_PORT}:${PROD_BACK_END_PORT}"
+    environment:
+      - "PORT=${PROD_BACK_END_PORT}"
+      - "PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
+      - "SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
+      - "VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
+    networks:
+      back-end:
+    command: npm start
+
+  prod-front-end:
+    image: nginx
+    container_name: production-photo-front-end
+    volumes:
+      - "${MEDIA_DATA_DIR}:/usr/share/nginx/html/media"
+      - "dist:/usr/share/nginx/html"
+    ports:
+      - "${PROD_FRONT_END_PORT}:${PROD_FRONT_END_PORT}"
+    depends_on:
+      build-front-end:
+        condition: service_completed_successfully
+
+volumes:
+  front-end-node-modules:
+  back-end-node-modules:
+  dist:
+
+
+networks:
+  back-end:
+    name: photo-app-back-end
+    ipam:
+      driver: default
+  front-end:
+    name: photo-app-front-end
+    ipam:
+      driver: default

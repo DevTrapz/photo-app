@@ -5,13 +5,20 @@ services:
     container_name: photo-app-front-end
     volumes:
       - ./front-end/:/app
-      - "${IMAGE_DATA_DIR}:/app/data"
+      - "${MEDIA_DATA_DIR}:/app/data"
       - front-end-node-modules:/app/node_modules
     ports:
-      - "5173:5173"
+      - "${DEV_FRONT_END_PORT}:${DEV_FRONT_END_PORT}"
     networks:
       front-end:
+    environment:
+      - "VITE_BACK_END_LOCAL_IPv4=${DEV_BACK_END_LOCAL_IPv4}"
+      - "VITE_BACK_END_PORT=${DEV_BACK_END_PORT}"
+      - "VITE_PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
+      - "VITE_VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
+      - "VITE_SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
     command: npm run dev
+
 
   back-end:
     build:
@@ -19,12 +26,17 @@ services:
     container_name: photo-app-back-end
     volumes:
       - ./back-end/:/app
-      - "${IMAGE_DATA_DIR}:/app/data"
+      - "${MEDIA_DATA_DIR}:/app/data"
       - back-end-node-modules:/app/node_modules
     ports:
-      - "3000:3000"
+      - "${DEV_BACK_END_PORT}:${DEV_BACK_END_PORT}"
     networks:
       back-end:
+    environment:
+      - "PORT=${DEV_BACK_END_PORT}"
+      - "PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
+      - "VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
+      - "SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
     command: npm start
 
 volumes:
