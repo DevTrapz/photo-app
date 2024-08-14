@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { Drawer } from "flowbite-react";
 import "./OptionStyles.css";
@@ -7,15 +7,17 @@ export default function OptionsMenu() {
   const [cookies, setCookies] = useCookies(["preferences"]);
   const [isOpen, setIsOpen] = useState(false);
 
-  function toggleOption(e) {
+  function toggleOption(e: any) {
     const btn: HTMLElement = e.currentTarget;
     const option = btn.id;
     const cookie = cookies.preferences;
     var displayOptions = cookie["display-options"];
 
-    if (displayOptions.some((displayOption) => displayOption == option)) {
+    if (
+      displayOptions.some((displayOption: string) => displayOption == option)
+    ) {
       displayOptions = displayOptions.filter(
-        (displayOption) => displayOption != option
+        (displayOption: string) => displayOption != option
       );
     } else {
       displayOptions.push(option);
@@ -25,9 +27,9 @@ export default function OptionsMenu() {
   function setPreferredOptions() {
     var preferences = cookies.preferences["display-options"];
     var elements = document.querySelectorAll("[class^=display]");
-    [...elements].map((element: HTMLElement) => {
+    [...elements].map((element) => {
       const option = element.id;
-      if (preferences.some((type) => type == option)) {
+      if (preferences.some((type: string) => type == option)) {
         element.classList.remove("bg-gray-200");
         element.classList.add("bg-cyan-700");
       } else {

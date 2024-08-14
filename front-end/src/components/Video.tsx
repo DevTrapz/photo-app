@@ -1,11 +1,14 @@
-import React from "react";
+interface props {
+  src: string;
+  id: number;
+}
 
-export default function Video({ src, id }) {
+export default function Video({ src, id }: props) {
   return (
     <>
       <video
         key={id}
-        id={id}
+        id={id.toString()}
         controls
         preload="metadata"
         loop={true}

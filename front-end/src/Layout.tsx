@@ -1,4 +1,3 @@
-import React from "react";
 import App from "./App";
 import OptionsMenu from "./components/OptionsMenu";
 import { CookiesProvider, useCookies } from "react-cookie";

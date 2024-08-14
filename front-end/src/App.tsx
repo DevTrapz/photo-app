@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Video from "./components/Video";
 import Image from "./components/Image";
 import { useCookies } from "react-cookie";
@@ -9,9 +9,9 @@ interface MediaType {
 }
 
 function App() {
-  const [dataStream, setDataStream] = useState([]); // Entire data stream payload
-  const [preferredStream, setPreferred] = useState([]);
-  const [renderBlock, setRenderBlock] = useState([]); // data is render in block of 3
+  const [dataStream, setDataStream] = useState<MediaType[]>([]); // Entire data stream payload
+  const [preferredStream, setPreferred] = useState<MediaType[]>([]);
+  const [renderBlock, setRenderBlock] = useState<MediaType[]>([]); // data is render in block of 3
   const [cookies] = useCookies(["preferences"]);
 
   const options = {
@@ -22,8 +22,8 @@ function App() {
 
   function filterMediaPreferences() {
     const preferences = cookies.preferences["display-options"];
-    const newStream = dataStream.filter((media) =>
-      preferences.some((mediaType) => mediaType in media)
+    const newStream: MediaType[] = dataStream.filter((media) =>
+      preferences.some((mediaType: string) => mediaType in media)
     );
 
     setPreferred(newStream);
@@ -70,8 +70,10 @@ function App() {
       const observeID = blockSize - 3;
       // debugger;
       // const observedElement = document.querySelector(`[key=${observeID}]`);
-      const observedElement = document.getElementById(`${observeID}`);
-      observer.observe(observedElement);
+      const observedElement: HTMLElement | null = document.getElementById(
+        `${observeID}`
+      );
+      observedElement && observer.observe(observedElement);
     }
   }
 
@@ -98,7 +100,8 @@ function App() {
 
   return (
     <>
-      {renderBlock.map((stream, index) => {
+      {renderBlock.map(
+        (stream: { photo?: string; video?: string; short?: string }, index) => {
         if ("photo" in stream)
           return <Image key={index} id={index} src={stream.photo} />;
 
@@ -119,7 +122,8 @@ function App() {
               src={`${import.meta.env.VITE_SHORT_DATA_DIR}${stream.short}`}
             />
           );
-      })}
+        }
+      )}
     </>
   );
 }
