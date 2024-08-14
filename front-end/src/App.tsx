@@ -48,7 +48,9 @@ function App() {
       };
 
       const res = await fetch(
-        `http://${import.meta.env.VITE_LOCAL_IPv4}:3000/stream`,
+        `http://${import.meta.env.VITE_BACK_END_LOCAL_IPv4}:${
+          import.meta.env.VITE_BACK_END_PORT
+        }/stream`,
         requestOptions
       );
       const dataStream: MediaType[] = await res.json();
@@ -102,26 +104,26 @@ function App() {
     <>
       {renderBlock.map(
         (stream: { photo?: string; video?: string; short?: string }, index) => {
-        if ("photo" in stream)
-          return <Image key={index} id={index} src={stream.photo} />;
+          if ("photo" in stream)
+            return <Image key={index} id={index} src={stream.photo} />;
 
-        if ("video" in stream)
-          return (
-            <Video
-              key={index}
-              id={index}
-              src={`${import.meta.env.VITE_VIDEO_DATA_DIR}${stream.video}`}
-            />
-          );
+          if ("video" in stream)
+            return (
+              <Video
+                key={index}
+                id={index}
+                src={`${import.meta.env.VITE_VIDEO_DATA_DIR}${stream.video}`}
+              />
+            );
 
-        if ("short" in stream)
-          return (
-            <Video
-              key={index}
-              id={index}
-              src={`${import.meta.env.VITE_SHORT_DATA_DIR}${stream.short}`}
-            />
-          );
+          if ("short" in stream)
+            return (
+              <Video
+                key={index}
+                id={index}
+                src={`${import.meta.env.VITE_SHORT_DATA_DIR}${stream.short}`}
+              />
+            );
         }
       )}
     </>

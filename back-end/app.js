@@ -28,7 +28,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-const port = 3000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
