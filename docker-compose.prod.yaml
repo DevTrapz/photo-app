@@ -9,11 +9,11 @@ services:
       - front-end-node-modules:/app/node_modules
       - "dist:/app/dist/"
     environment:
-      - "VITE_BACK_END_LOCAL_IPv4=${PROD_BACK_END_LOCAL_IPv4}"
-      - "VITE_BACK_END_PORT=${PROD_BACK_END_PORT}"
-      - "VITE_PHOTO_DATA_DIR=${PROD_PHOTO_DATA_DIR}"
-      - "VITE_VIDEO_DATA_DIR=${PROD_VIDEO_DATA_DIR}"
-      - "VITE_SHORT_DATA_DIR=${PROD_SHORT_DATA_DIR}"
+      VITE_BACK_END_LOCAL_IPv4: "${PROD_BACK_END_LOCAL_IPv4}"
+      VITE_BACK_END_PORT: "${PROD_BACK_END_PORT}"
+      VITE_PHOTO_DATA_DIR: "${PROD_PHOTO_DATA_DIR}"
+      VITE_VIDEO_DATA_DIR: "${PROD_VIDEO_DATA_DIR}"
+      VITE_SHORT_DATA_DIR: "${PROD_SHORT_DATA_DIR}"
     command: npm run build
 
   prod-back-end:
@@ -27,10 +27,10 @@ services:
     ports:
       - "${PROD_BACK_END_PORT}:${PROD_BACK_END_PORT}"
     environment:
-      - "PORT=${PROD_BACK_END_PORT}"
-      - "PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
-      - "SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
-      - "VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
+      PORT: "${PROD_BACK_END_PORT}"
+      PHOTO_DATA_DIR: "${DEV_PHOTO_DATA_DIR}"
+      SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
+      VIDEO_DATA_DIR: "${DEV_VIDEO_DATA_DIR}"
     networks:
       back-end:
     command: npm start

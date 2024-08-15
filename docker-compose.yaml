@@ -14,11 +14,11 @@ services:
       public:
         ipv4_address: "${DEV_FRONT_END_IPv4}"
     environment:
-      - "VITE_BACK_END_LOCAL_IPv4=${DEV_BACK_END_LOCAL_IPv4}"
-      - "VITE_BACK_END_PORT=${DEV_BACK_END_PORT}"
-      - "VITE_PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
-      - "VITE_VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
-      - "VITE_SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
+      VITE_BACK_END_LOCAL_IPv4: "${DEV_BACK_END_LOCAL_IPv4}"
+      VITE_BACK_END_PORT: "${DEV_BACK_END_PORT}"
+      VITE_PHOTO_DATA_DIR: "${DEV_PHOTO_DATA_DIR}"
+      VITE_VIDEO_DATA_DIR: "${DEV_VIDEO_DATA_DIR}"
+      VITE_SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
 
 
   back-end:
@@ -31,10 +31,10 @@ services:
       - "${MEDIA_DATA_DIR}:/app/data"
       - back-end-node-modules:/app/node_modules
     environment:
-      - "PORT=${DEV_BACK_END_PORT}"
-      - "PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
-      - "VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
-      - "SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
+      PORT: "${DEV_BACK_END_PORT}"
+      PHOTO_DATA_DIR: "${DEV_PHOTO_DATA_DIR}"
+      VIDEO_DATA_DIR: "${DEV_VIDEO_DATA_DIR}"
+      SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
     ports:
       - "${DEV_BACK_END_PORT}:${DEV_BACK_END_PORT}"
     networks:
