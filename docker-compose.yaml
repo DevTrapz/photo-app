@@ -3,6 +3,7 @@ services:
     build:
       dockerfile: Dockerfile.front-end
     container_name: photo-app-front-end
+    command: npm run dev
     volumes:
       - ./front-end/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
@@ -10,34 +11,35 @@ services:
     ports:
       - "${DEV_FRONT_END_PORT}:${DEV_FRONT_END_PORT}"
     networks:
-      front-end:
+      public:
+        ipv4_address: "${DEV_FRONT_END_IPv4}"
     environment:
       - "VITE_BACK_END_LOCAL_IPv4=${DEV_BACK_END_LOCAL_IPv4}"
       - "VITE_BACK_END_PORT=${DEV_BACK_END_PORT}"
       - "VITE_PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
       - "VITE_VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
       - "VITE_SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
-    command: npm run dev
 
 
   back-end:
     build:
       dockerfile: Dockerfile.back-end
     container_name: photo-app-back-end
+    command: npm start
     volumes:
       - ./back-end/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
       - back-end-node-modules:/app/node_modules
-    ports:
-      - "${DEV_BACK_END_PORT}:${DEV_BACK_END_PORT}"
-    networks:
-      back-end:
     environment:
       - "PORT=${DEV_BACK_END_PORT}"
       - "PHOTO_DATA_DIR=${DEV_PHOTO_DATA_DIR}"
       - "VIDEO_DATA_DIR=${DEV_VIDEO_DATA_DIR}"
       - "SHORT_DATA_DIR=${DEV_SHORT_DATA_DIR}"
-    command: npm start
+    ports:
+      - "${DEV_BACK_END_PORT}:${DEV_BACK_END_PORT}"
+    networks:
+      public:
+        ipv4_address: "${DEV_BACK_END_IPv4}"
 
 volumes:
   front-end-node-modules:
@@ -45,11 +47,17 @@ volumes:
 
 
 networks:
-  back-end:
-    name: photo-app-back-end
+  private:
+    name: photo-app-private
+    driver: bridge
     ipam:
-      driver: default
-  front-end:
-    name: photo-app-front-end
+      config:
+       - subnet: "${DEV_PRIVATE_NETWORK}"
+         gateway: "${DEV_PRIVATE_GATEWAY}"
+  public:
+    name: photo-app-public
+    driver: bridge
     ipam:
-      driver: default
+      config:
+        - subnet: "${DEV_PUBLIC_NETWORK}"
+          gateway: "${DEV_PUBLIC_GATEWAY}"
