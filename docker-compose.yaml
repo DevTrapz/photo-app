@@ -62,7 +62,8 @@ services:
     image: pgvector/pgvector:pg16
     container_name: photo-app-db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - Photo-DB-pgdata:/var/lib/postgresql/data
+      - "./photo-db/:/docker-entrypoint-initdb.d"
     restart: always
     shm_size: 128mb
     environment:
@@ -77,7 +78,7 @@ services:
 volumes:
   front-end-node-modules:
   back-end-node-modules:
-  pgdata:
+  Photo-DB-pgdata:
 
 
 networks:
