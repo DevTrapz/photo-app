@@ -1,5 +1,5 @@
 node_modules
 .env
-front-end/dist
+dist
 scripts/
 face-api/stored-faces

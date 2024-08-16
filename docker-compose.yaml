@@ -1,13 +1,13 @@
 services:
-  front-end:
+  web-mobile-ui:
     build:
-      dockerfile: Dockerfile.front-end
-    container_name: photo-app-front-end
+      dockerfile: Dockerfile.web-mobile-ui
+    container_name: Web-Mobile-UI-Dev
     command: npm run dev
     volumes:
-      - ./front-end/:/app
+      - ./web-mobile-ui/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
-      - front-end-node-modules:/app/node_modules
+      - Web-Mobile-UI-node-modules:/app/node_modules
     ports:
       - "${DEV_FRONT_END_PORT}:${DEV_FRONT_END_PORT}"
     networks:
@@ -21,15 +21,15 @@ services:
       VITE_SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
 
 
-  back-end:
+  stream-api:
     build:
-      dockerfile: Dockerfile.back-end
-    container_name: photo-app-back-end
+      dockerfile: Dockerfile.stream-api
+    container_name: Stream-API-Dev
     command: npm start
     volumes:
-      - ./back-end/:/app
+      - ./stream-api/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
-      - back-end-node-modules:/app/node_modules
+      - Stream-API-node-modules:/app/node_modules
     environment:
       PORT: "${DEV_BACK_END_PORT}"
       PHOTO_DATA_DIR: "${DEV_PHOTO_DATA_DIR}"
@@ -43,8 +43,8 @@ services:
 
   face-api:
     build: 
-      dockerfile: Dockerfile.dev.face-api
-    container_name: photo-app-face-api
+      dockerfile: Dockerfile.face-api
+    container_name: Face-API-Dev
     volumes:
       - "${MEDIA_DATA_DIR}:/app/data"
       - "./face-api/:/app"
@@ -58,9 +58,9 @@ services:
       private:
         ipv4_address: "${DEV_FACE_API_IPv4}"
   
-  db:
+  photo-db:
     image: pgvector/pgvector:pg16
-    container_name: photo-app-db
+    container_name: Photo-DB-Dev
     volumes:
       - Photo-DB-pgdata:/var/lib/postgresql/data
       - "./photo-db/:/docker-entrypoint-initdb.d"
@@ -76,21 +76,21 @@ services:
         ipv4_address: "${DEV_DB_IPv4}"
 
 volumes:
-  front-end-node-modules:
-  back-end-node-modules:
+  Web-Mobile-UI-node-modules:
+  Stream-API-node-modules:
   Photo-DB-pgdata:
 
 
 networks:
   private:
-    name: photo-app-private
+    name: Private-Photo-App-Dev
     driver: bridge
     ipam:
       config:
        - subnet: "${DEV_PRIVATE_NETWORK}"
          gateway: "${DEV_PRIVATE_GATEWAY}"
   public:
-    name: photo-app-public
+    name: Public-Photo-App-Dev
     driver: bridge
     ipam:
       config:

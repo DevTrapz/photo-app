@@ -1,13 +1,13 @@
 services:
-  build-front-end:
+  build-web-mobile-ui:
     build:
-      dockerfile: Dockerfile.front-end
-    container_name: build-front-end
+      dockerfile: Dockerfile.web-mobile-ui
+    container_name: Build-Web-Mobile-UI-Production
     volumes:
-      - ./front-end/:/app
+      - ./web-mobile-ui/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
-      - front-end-node-modules:/app/node_modules
-      - "dist:/app/dist/"
+      - Build-Web-Mobile-UI-node-modules:/app/node_modules
+      - "Web-Mobile-UI-dist:/app/dist/"
     environment:
       VITE_BACK_END_LOCAL_IPv4: "${PROD_BACK_END_LOCAL_IPv4}"
       VITE_BACK_END_PORT: "${PROD_BACK_END_PORT}"
@@ -15,15 +15,17 @@ services:
       VITE_VIDEO_DATA_DIR: "${PROD_VIDEO_DATA_DIR}"
       VITE_SHORT_DATA_DIR: "${PROD_SHORT_DATA_DIR}"
     command: npm run build
+    networks:
+      Private:
 
-  prod-back-end:
+  stream-api:
     build: 
-      dockerfile: Dockerfile.back-end
-    container_name: production-photo-app-back-end
+      dockerfile: Dockerfile.stream-api
+    container_name: Stream-API-Production
     volumes:
-      - ./back-end/:/app
+      - ./stream-api/:/app
       - "${MEDIA_DATA_DIR}:/app/data"
-      - back-end-node-modules:/app/node_modules
+      - Stream-API-node-modules:/app/node_modules
     ports:
       - "${PROD_BACK_END_PORT}:${PROD_BACK_END_PORT}"
     environment:
@@ -32,33 +34,35 @@ services:
       SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
       VIDEO_DATA_DIR: "${DEV_VIDEO_DATA_DIR}"
     networks:
-      back-end:
+      Public:
     command: npm start
 
-  prod-front-end:
+  web-mobile-ui:
     image: nginx
-    container_name: production-photo-front-end
+    container_name: Web-Mobile-UI-Production
     volumes:
       - "${MEDIA_DATA_DIR}:/usr/share/nginx/html/media"
-      - "dist:/usr/share/nginx/html"
+      - "Web-Mobile-UI-dist:/usr/share/nginx/html"
     ports:
       - "${PROD_FRONT_END_PORT}:${PROD_FRONT_END_PORT}"
+    networks:
+      Public:
     depends_on:
-      build-front-end:
+      Build-Web-Mobile-UI:
         condition: service_completed_successfully
 
 volumes:
-  front-end-node-modules:
-  back-end-node-modules:
-  dist:
+  Build-Web-Mobile-UI-node-modules:
+  Stream-API-node-modules:
+  Web-Mobile-UI-dist:
 
 
 networks:
-  back-end:
-    name: photo-app-back-end
+  Private:
+    name: Private-Photo-App-Production
+    driver: bridge
     ipam:
-      driver: default
-  front-end:
-    name: photo-app-front-end
+  Public:
+    name: Public-Photo-App-Production
+    driver: bridge
     ipam:
-      driver: default
