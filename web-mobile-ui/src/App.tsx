@@ -70,8 +70,6 @@ function App({ refresh }: { refresh: number }) {
     if (renderBlock.length >= 3) {
       const blockSize = renderBlock.length;
       const observeID = blockSize - 3;
-      // debugger;
-      // const observedElement = document.querySelector(`[key=${observeID}]`);
       const observedElement: HTMLElement | null = document.getElementById(
         `${observeID}`
       );
