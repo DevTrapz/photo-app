@@ -1,8 +1,11 @@
-import cv2
+import cv2 # type: ignore
 import requests
-import numpy as np
-import psycopg2
+import numpy as np # type: ignore
+import psycopg2 # type: ignore
 import os
+from imgbeddings import imgbeddings # type: ignore
+from PIL import Image # type: ignore
+
 
 def dbConnectionSetup():
     dbIP = os.environ.get('DB_IP')
