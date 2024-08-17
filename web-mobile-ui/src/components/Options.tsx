@@ -2,7 +2,11 @@ import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import "./../index.css";
 
-export default function OptionsMenu({ refreshApp }) {
+interface props {
+  refreshFeed: () => void;
+}
+
+export default function Options({ refreshFeed }: props) {
   const [cookies, setCookies] = useCookies(["preferences"]);
 
   function toggleOption(e: any) {
@@ -58,7 +62,7 @@ export default function OptionsMenu({ refreshApp }) {
           <div className="flex max-w-md mx-auto">
             <button
               id="refresh"
-              onClick={refreshApp}
+              onClick={refreshFeed}
               className={`display-refresh ${buttonCSS}`}
             >
               <svg
