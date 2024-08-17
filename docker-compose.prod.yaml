@@ -9,14 +9,15 @@ services:
       - Build-Web-Mobile-UI-node-modules:/app/node_modules
       - "Web-Mobile-UI-dist:/app/dist/"
     environment:
-      VITE_BACK_END_LOCAL_IPv4: "${PROD_BACK_END_LOCAL_IPv4}"
-      VITE_BACK_END_PORT: "${PROD_BACK_END_PORT}"
-      VITE_PHOTO_DATA_DIR: "${PROD_PHOTO_DATA_DIR}"
-      VITE_VIDEO_DATA_DIR: "${PROD_VIDEO_DATA_DIR}"
-      VITE_SHORT_DATA_DIR: "${PROD_SHORT_DATA_DIR}"
+      VITE_BACK_END_LOCAL_IPv4: "${STREAM_API_HOST_IPv4_PROD}"
+      VITE_BACK_END_PORT: "${STREAM_API_PORT_PROD}"
+      VITE_PHOTO_DATA_DIR: "${PHOTO_DATA_DIR_WEB_MOBILE_UI_PROD}"
+      VITE_VIDEO_DATA_DIR: "${VIDEO_DATA_DIR_WEB_MOBILE_UI_PROD}"
+      VITE_SHORT_DATA_DIR: "${SHORT_DATA_DIR_WEB_MOBILE_UI_PROD}"
     command: npm run build
     networks:
       Private:
+        ipv4_address: "${BUILD_WEB_MOBILE_UI_IPv4_PROD}"
 
   stream-api:
     build: 
@@ -27,14 +28,15 @@ services:
       - "${MEDIA_DATA_DIR}:/app/data"
       - Stream-API-node-modules:/app/node_modules
     ports:
-      - "${PROD_BACK_END_PORT}:${PROD_BACK_END_PORT}"
+      - "${STREAM_API_PORT_PROD}:${STREAM_API_PORT_PROD}"
     environment:
-      PORT: "${PROD_BACK_END_PORT}"
-      PHOTO_DATA_DIR: "${DEV_PHOTO_DATA_DIR}"
-      SHORT_DATA_DIR: "${DEV_SHORT_DATA_DIR}"
-      VIDEO_DATA_DIR: "${DEV_VIDEO_DATA_DIR}"
+      PORT: "${STREAM_API_PORT_PROD}"
+      PHOTO_DATA_DIR: "${PHOTO_DATA_DIR_STREAM_API}"
+      SHORT_DATA_DIR: "${SHORT_DATA_DIR_STREAM_API}"
+      VIDEO_DATA_DIR: "${VIDEO_DATA_DIR_STREAM_API}"
     networks:
       Public:
+        ipv4_address: "${STREAM_API_IPv4_PROD}"
     command: npm start
 
   web-mobile-ui:
@@ -44,11 +46,12 @@ services:
       - "${MEDIA_DATA_DIR}:/usr/share/nginx/html/media"
       - "Web-Mobile-UI-dist:/usr/share/nginx/html"
     ports:
-      - "${PROD_FRONT_END_PORT}:${PROD_FRONT_END_PORT}"
+      - "${WEB_MOBILE_UI_PROD}:${WEB_MOBILE_UI_PROD}"
     networks:
       Public:
+        ipv4_address: "${WEB_MOBILE_UI_IPv4_PROD}"
     depends_on:
-      Build-Web-Mobile-UI:
+      build-web-mobile-ui:
         condition: service_completed_successfully
 
 volumes:
@@ -62,7 +65,13 @@ networks:
     name: Private-Photo-App-Production
     driver: bridge
     ipam:
+      config:
+        - subnet: "${PRIVATE_SUBNET_PROD}"
+          gateway: "${PRIVATE_GATEWAY_PROD}"
   Public:
     name: Public-Photo-App-Production
     driver: bridge
     ipam:
+      config:
+        - subnet: "${PUBLIC_SUBNET_PROD}"
+          gateway: "${PUBLIC_GATEWAY_PROD}"

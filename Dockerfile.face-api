@@ -29,4 +29,5 @@ RUN pip install torch torchvision torchaudio
 RUN pip install tensorflow
 RUN pip install flax
 RUN pip install ipython
+RUN pip install deepface
 
