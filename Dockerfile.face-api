@@ -22,6 +22,7 @@ RUN apt-get install -y --fix-missing \
   python3-numpy \
   software-properties-common \
   zip \
+  vim \
   && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 RUN pip install opencv-python imgbeddings psycopg2-binary
@@ -30,4 +31,5 @@ RUN pip install tensorflow
 RUN pip install flax
 RUN pip install ipython
 RUN pip install deepface
+RUN pip install tf-keras
 

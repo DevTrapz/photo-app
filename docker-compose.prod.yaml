@@ -9,7 +9,7 @@ services:
       - Build-Web-Mobile-UI-node-modules:/app/node_modules
       - "Web-Mobile-UI-dist:/app/dist/"
     environment:
-      VITE_BACK_END_LOCAL_IPv4: "${STREAM_API_HOST_IPv4_PROD}"
+      VITE_BACK_END_LOCAL_IPv4: "${HOST_IPv4}"
       VITE_BACK_END_PORT: "${STREAM_API_PORT_PROD}"
       VITE_PHOTO_DATA_DIR: "${PHOTO_DATA_DIR_WEB_MOBILE_UI_PROD}"
       VITE_VIDEO_DATA_DIR: "${VIDEO_DATA_DIR_WEB_MOBILE_UI_PROD}"

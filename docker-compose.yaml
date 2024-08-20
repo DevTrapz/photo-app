@@ -14,7 +14,7 @@ services:
       public:
         ipv4_address: "${WEB_MOBILE_UI_IPv4_DEV}"
     environment:
-      VITE_BACK_END_LOCAL_IPv4: "${STREAM_API_HOST_IPv4_DEV}"
+      VITE_BACK_END_LOCAL_IPv4: "${HOST_IPv4}"
       VITE_BACK_END_PORT: "${STREAM_API_PORT_DEV}"
       VITE_PHOTO_DATA_DIR: "${PHOTO_DATA_DIR_WEB_MOBILE_UI_DEV}"
       VITE_VIDEO_DATA_DIR: "${VIDEO_DATA_DIR_WEB_MOBILE_UI_DEV}"
@@ -59,7 +59,8 @@ services:
         ipv4_address: "${FACE_API_IPv4_DEV}"
   
   photo-db:
-    image: pgvector/pgvector:pg16
+    build: 
+      dockerfile: Dockerfile.photo-db
     container_name: Photo-DB-Dev
     volumes:
       - Photo-DB-pgdata:/var/lib/postgresql/data
