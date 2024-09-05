@@ -12,7 +12,6 @@ services:
       - "${WEB_MOBILE_UI_PORT_DEV}:${WEB_MOBILE_UI_PORT_DEV}"
     networks:
       public:
-        ipv4_address: "${WEB_MOBILE_UI_IPv4_DEV}"
     environment:
       VITE_BACK_END_LOCAL_IPv4: "${HOST_IPv4}"
       VITE_BACK_END_PORT: "${STREAM_API_PORT_DEV}"
@@ -39,7 +38,6 @@ services:
       - "${STREAM_API_PORT_DEV}:${STREAM_API_PORT_DEV}"
     networks:
       public:
-        ipv4_address: "${STREAM_API_IPv4_DEV}"
 
   face-api:
     build: 
@@ -52,11 +50,10 @@ services:
     environment:
       POSTGRES_PASSWORD: "${PHOTO_DB_PASSWORD_DEV}"
       POSTGRES_USER: "${PHOTO_DB_USER_DEV}"
-      DB_IP: "${PHOTO_DB_IPv4_DEV}"
+      DB_IP: photo-db
       DB_PORT: "${PHOTO_DB_PORT_DEV}"
     networks:
       private:
-        ipv4_address: "${FACE_API_IPv4_DEV}"
   
   photo-db:
     build: 
@@ -74,7 +71,6 @@ services:
      - "${PHOTO_DB_PORT_DEV}:${PHOTO_DB_PORT_DEV}"
     networks:
       private:
-        ipv4_address: "${PHOTO_DB_IPv4_DEV}"
 
 volumes:
   Web-Mobile-UI-node-modules:
@@ -86,14 +82,6 @@ networks:
   private:
     name: Private-Photo-App-Dev
     driver: bridge
-    ipam:
-      config:
-       - subnet: "${PRIVATE_SUBNET_DEV}"
-         gateway: "${PRIVATE_GATEWAY_DEV}"
   public:
     name: Public-Photo-App-Dev
     driver: bridge
-    ipam:
-      config:
-        - subnet: "${PUBLIC_SUBNET_DEV}"
-          gateway: "${PUBLIC_GATEWAY_DEV}"

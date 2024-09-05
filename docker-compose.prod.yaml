@@ -5,7 +5,6 @@ services:
     container_name: Build-Web-Mobile-UI-Production
     volumes:
       - ./web-mobile-ui/:/app
-      - "${MEDIA_DATA_DIR}:/app/data"
       - Build-Web-Mobile-UI-node-modules:/app/node_modules
       - "Web-Mobile-UI-dist:/app/dist/"
     environment:
@@ -17,7 +16,6 @@ services:
     command: npm run build
     networks:
       Private:
-        ipv4_address: "${BUILD_WEB_MOBILE_UI_IPv4_PROD}"
 
   stream-api:
     build: 
@@ -25,7 +23,7 @@ services:
     container_name: Stream-API-Production
     volumes:
       - ./stream-api/:/app
-      - "${MEDIA_DATA_DIR}:/app/data"
+      - "${MEDIA_DATA_DIR}:/media"
       - Stream-API-node-modules:/app/node_modules
     ports:
       - "${STREAM_API_PORT_PROD}:${STREAM_API_PORT_PROD}"
@@ -36,7 +34,6 @@ services:
       VIDEO_DATA_DIR: "${VIDEO_DATA_DIR_STREAM_API}"
     networks:
       Public:
-        ipv4_address: "${STREAM_API_IPv4_PROD}"
     command: npm start
 
   web-mobile-ui:
@@ -46,10 +43,9 @@ services:
       - "${MEDIA_DATA_DIR}:/usr/share/nginx/html/media"
       - "Web-Mobile-UI-dist:/usr/share/nginx/html"
     ports:
-      - "${WEB_MOBILE_UI_PROD}:${WEB_MOBILE_UI_PROD}"
+      - "${WEB_MOBILE_UI_PROD}:80"
     networks:
       Public:
-        ipv4_address: "${WEB_MOBILE_UI_IPv4_PROD}"
     depends_on:
       build-web-mobile-ui:
         condition: service_completed_successfully
@@ -62,16 +58,6 @@ volumes:
 
 networks:
   Private:
-    name: Private-Photo-App-Production
-    driver: bridge
-    ipam:
-      config:
-        - subnet: "${PRIVATE_SUBNET_PROD}"
-          gateway: "${PRIVATE_GATEWAY_PROD}"
+    driver: none
   Public:
-    name: Public-Photo-App-Production
     driver: bridge
-    ipam:
-      config:
-        - subnet: "${PUBLIC_SUBNET_PROD}"
-          gateway: "${PUBLIC_GATEWAY_PROD}"
